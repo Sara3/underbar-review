@@ -100,6 +100,7 @@
     _.each(collection, (el) => {
       if (test(el, arr)) {
         arr.push(el);
+  // return function () {} <-- closure!!!!
       }
     });
     return arr;
@@ -109,7 +110,9 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
-    return _.filter(collection, (el, resultArr) => { return !test(el, resultArr)});
+    return _.filter(collection, (el, resultArr) => {
+      return !test(el, resultArr);
+    });
   };
 
   // Produce a duplicate-free version of the array.
@@ -131,6 +134,15 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    // output: array --> results?
+    // process: 
+    var results = [];
+    // loop thru collection
+    _.each(collection, (value) => {
+      return results.push(iterator(value));
+    });
+      // results.push(iterator(element));
+    return results;
   };
 
   /*
@@ -139,7 +151,7 @@
    * as an example of this.
    */
 
-  // Takes an array of objects and returns and array of the values of
+  // Takes an array of objects and returns an array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(collection, key) {
@@ -172,6 +184,28 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    // 2 usages
+    // var accumulator;
+      // 1. startingVal is defined
+        // accumulator is set to startingVal
+          
+      // 2. startingVal is undefined
+        //
+      // loop thru collection
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      //accumulator = iterator(accumulator, collection [1]);
+      for (let i = 1; i < collection.length; i++) {
+        accumulator = iterator(accumulator, collection[i]); 
+      }
+    } else { 
+      for (let i = 0; i < collection.length; i++) {
+        accumulator = iterator(accumulator, collection[i]); 
+      }
+    }
+
+    
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
