@@ -98,7 +98,7 @@
   _.filter = function(collection, test) {
     const arr = [];
     _.each(collection, (el) => {
-      if (test(el)) {
+      if (test(el, arr)) {
         arr.push(el);
       }
     });
@@ -109,10 +109,20 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, (el, resultArr) => { return !test(el, resultArr)});
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    //if array[i] in the array 
+
+    return _.reject(array, (el, resultArr) => {
+      if (resultArr === undefined) {
+        debugger;
+      }
+      return resultArr.includes(el);
+    });
+
   };
 
 
