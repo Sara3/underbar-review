@@ -192,17 +192,30 @@
       // 2. startingVal is undefined
         //
       // loop thru collection
+  
     if (accumulator === undefined) {
       accumulator = collection[0];
-      //accumulator = iterator(accumulator, collection [1]);
-      for (let i = 1; i < collection.length; i++) {
-        accumulator = iterator(accumulator, collection[i]); 
-      }
-    } else { 
-      for (let i = 0; i < collection.length; i++) {
-        accumulator = iterator(accumulator, collection[i]); 
-      }
+      _.each(collection, (el, index) => {
+        if (index !== 0) {
+          accumulator = iterator(accumulator, el);
+        }
+      });
+    } else {
+      _.each(collection, (el, index) => {
+        accumulator = iterator(accumulator, el);
+      });
     }
+    // if (accumulator === undefined) {
+    //   accumulator = collection[0];
+    //   //accumulator = iterator(accumulator, collection [1]);
+    //   for (let i = 1; i < collection.length; i++) {
+    //     accumulator = iterator(accumulator, collection[i]); 
+    //   }
+    // } else { 
+    //   for (let i = 0; i < collection.length; i++) {
+    //     accumulator = iterator(accumulator, collection[i]); 
+    //   }
+    // }
 
     
     return accumulator;
@@ -212,7 +225,7 @@
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
-    return _.reduce(collection, function(wasFound, item) {
+    return _.reduce(collection, function(wasFound, item) { // _.contains([1,2,3,4], 3)
       if (wasFound) {
         return true;
       }
