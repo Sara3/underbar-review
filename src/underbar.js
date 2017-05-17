@@ -184,14 +184,8 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    // 2 usages
-    // var accumulator;
-      // 1. startingVal is defined
-        // accumulator is set to startingVal
-          
-      // 2. startingVal is undefined
-        //
-      // loop thru collection
+   
+      // Check this 
   
     if (accumulator === undefined) {
       accumulator = collection[0];
@@ -237,12 +231,45 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    // _.reduce(collection, (accumulator, currVal) => { }, true)
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
+    for (var i = 0; i < collection.length; i++) {
+      if (!iterator(collection[i])) {
+        return false;
+      }
+    }    
+    return true;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    // Use every?
+    // Some = 'at least one'
+      // if not every item fails the test
+    // [true, true, true]
+      // 
+    iterator = iterator || _.identity;
+    return !_.every(collection, function (el) {
+      return !iterator(el);
+    });
+    // Every = 'every one'
+
+
+
+
+    // if (iterator === undefined) {
+    //   iterator = _.identity;
+    // }
+    // for (var i = 0; i < collection.length; i++) {
+    //   if (iterator(collection[i])) {
+    //     return true;
+    //   }
+    // }    
+    // return false;
   };
 
 
@@ -265,11 +292,28 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    //get object1
+    // loop thru the second object and add it to object1
+    let objects = Array.prototype.slice.call(arguments, 1);
+    _.each(objects, (objEl) => {
+      _.each(objEl, (value, key) => obj[key] = value);
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    let objects = Array.prototype.slice.call(arguments, 1);
+    _.each(objects, (objEl) => {
+      _.each(objEl, (value, key) => {
+        if (!obj.hasOwnProperty(key)) {
+          obj[key] = value;
+        }
+      });
+    });
+    return obj;
+    // 
   };
 
 
